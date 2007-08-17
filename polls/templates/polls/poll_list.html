@@ -1,0 +1,15 @@
+{% load i18n %}
+{% extends "base.html" %}
+{% block title %}Polls{% endblock %}
+{% block breadcrumb %}<li class="last">Polls</li>{% endblock %}
+{% block content %}
+{% if is_paginated %}{% load paginator %}<div class="paginator">{% paginator %}</div>{% endif %}
+<table>
+{% load sorter %}
+<tr><td>{% sorter "title" "Title" %}</td> <td>{% sorter "user" "Author" %}</td> <td>{% sorter "pub_date" "Date Published" %}</td></tr>
+{% for object in object_list %}
+<tr><td><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></td> <td><a href="{{ object.user.get_absolute_url }}">{{ object.user }}</a>{% load iptocountry_filter %}{{ object.ip_address|get_country2:"iptocountry/flags/"}}</td> <td>{{ object.pub_date }}</td></tr>
+{% endfor %}
+</table>
+{% if is_paginated %}{% load paginator %}<div class="paginator">{% paginator %}</div>{% endif %}
+{% endblock %}

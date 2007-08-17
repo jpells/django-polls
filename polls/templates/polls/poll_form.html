@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Create Poll{% endblock %}
+{% block extrahead %}<script type="text/javascript" src="{{ MEDIA_URL }}polls/addChoice.js"></script>{% endblock %}
+{% block breadcrumb %}<li><a href="/polls/">Polls</a></li> <li class="last">Create</li>{% endblock %}
+{% block content %}
+<form action="." method="post">
+    <ul id="poll_form">
+        {{ poll_form.as_ul }}
+        {% for choice_form in choice_forms %}
+            {{ choice_form.as_ul }}
+        {% endfor %}
+        <button type="button" onclick="createChoice()" id="addChoice">Add Choice</button>
+    </ul>
+    <input type="submit" value="Create Poll" />
+</form>
+{% endblock %}
