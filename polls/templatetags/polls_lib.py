@@ -9,7 +9,7 @@ def get_latest_poll(user, ip_address):
     template_dict = {}
     template_dict.update({'poll_exists': True, 'already_voted': False, 'user': user, 'MEDIA_URL': settings.MEDIA_URL, 'not_auth': False})
     try:
-        poll = Poll.objects.filter(state=settings.STATE_PUBLISHED).latest('pub_date')
+        poll = Poll.published_objects.all().latest('pub_date')
         template_dict.update({'poll': poll})
         template_dict.update({'choice_tuple': poll.get_choices_tuple()})
         VoteForm = forms.form_for_model(Vote)

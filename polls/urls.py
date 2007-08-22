@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     (r'^atom/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds, 'url': 'atom'}),
 )
 
-urlpatterns += patterns('common.views.views',
+urlpatterns += patterns('sorted_paginated_authored_archived_list_view.views',
     (r'^(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<day>\w{1,2})/$', 'sorted_paginated_authored_archived_list', poll_dict),
     (r'^(?P<year>\d{4})/(?P<month>[a-z]{3})/$', 'sorted_paginated_authored_archived_list', poll_dict),
     (r'^(?P<year>\d{4})/$', 'sorted_paginated_authored_archived_list', poll_dict),

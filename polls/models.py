@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
 from tagging.fields import TagField
+from published_manager.managers import PublishedManager
 
 class Poll(models.Model):
     """
@@ -15,6 +16,8 @@ class Poll(models.Model):
     state = models.CharField(maxlength=1, choices=settings.STATE_CHOICES, default=settings.STATE_DEFAULT, verbose_name=_("State of object"))
     ip_address = models.IPAddressField(verbose_name=_("Author's IP Address"))
     tags = TagField(help_text=_("Enter key terms seperated with a space that you want to associate with this Poll"), verbose_name=_("Tags"))
+    objects = models.Manager()
+    published_objects = PublishedManager()
 
     def get_choices_tuple(self):
         choices = Choice.objects.with_counts(poll_id=self.id, as_dict=False)

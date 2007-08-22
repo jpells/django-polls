@@ -8,7 +8,7 @@ class RssFeed(Feed):
     link = "/polls/" 
     description = _("Polls")
     def items(self):
-        return Poll.objects.filter(state=settings.STATE_PUBLISHED).order_by('-pub_date')[:5]
+        return Poll.published_objects.all().order_by('-pub_date')[:5]
 
 class AtomFeed(RssFeed):
     feed_type = Atom1Feed
