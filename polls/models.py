@@ -55,6 +55,7 @@ class ChoiceManager(models.Manager):
     def with_counts(self, poll_id, as_dict):
         from django.db import connection
         cursor = connection.cursor()
+        #TODO fix for postgres
         cursor.execute("SELECT a.poll_id, a.id, a.choice, ifnull(i.num_votes, 0) vote_count from polls_choice a left outer join (select c.poll_id, c.choice, count(*) num_votes from polls_choice c, polls_vote v where c.poll_id = v.poll_id and c.id = v.choice_id group by c.choice) i on a.choice = i.choice where a.poll_id = %s;", [poll_id])
         result_list = []
         for row in cursor.fetchall():
@@ -96,7 +97,7 @@ class Vote(models.Model):
     poll = models.ForeignKey(Poll, verbose_name=_("Poll"))
     choice = models.ForeignKey(Choice, radio_admin=True, verbose_name=_("Choice"))
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name=_("Date Published"))
-    user = models.ForeignKey(User, verbose_name=_("User"))
+    user = models.ForeignKey(User, verbose_name=_("User"), related_name='polls_vote')
     ip_address = models.IPAddressField(verbose_name=_("Author's IP Address"))
 
     def __str__(self):

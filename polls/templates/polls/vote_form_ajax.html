@@ -1,6 +1,5 @@
 <div id="poll_ajax">
 {% block extrahead %}
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/prototype.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}polls/ajax.js"></script>
 {% endblock %}
 <h2>Poll</h2>
@@ -10,12 +9,8 @@
     <li>{{ choice.1 }} -- {{ choice.2 }} vote{{ choice.2|pluralize }}</li>
 {% endfor %}
 {% else %}
-{% if not_auth %}
-<h2>Please <a href="/accounts/login/">login</a> first!</h2>
-{% else %}
 {% if form.has_errors %}
 <h2>Please correct the following error{{ form.error_dict|pluralize }}:</h2>
-{% endif %}
 {% endif %}
 <form method="post" action="." onsubmit="return send_form(this);">
 {{ form.as_ul }}
