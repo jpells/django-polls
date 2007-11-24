@@ -36,7 +36,10 @@ def poll_form(request):
                     choice.poll = poll
                     choice.save()
                 choice_forms.append(choice_form)
-            return HttpResponseRedirect(poll.get_absolute_url())
+            if settings.STATE_DEFAULT != settings.STATE_PUBLISHED:
+                return HttpResponseRedirect('/polls/posted/')
+            else:
+                return HttpResponseRedirect(poll.get_absolute_url())
     else:
         poll_form = PollFormClass()
         for i in range(settings.POLL_DEFAULT_CHOICE_COUNT):

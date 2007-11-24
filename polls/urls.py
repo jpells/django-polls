@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from polls.feeds import RssFeed, AtomFeed
 from polls.models import Poll, Vote
+from django.conf import settings
 
 feeds = { 
     'rss': RssFeed,
@@ -31,8 +32,13 @@ urlpatterns += patterns('sorted_paginated_authored_archived_list_view.views',
     # if votes were really archived there would be more urls here
 )
 
+urlpatterns += patterns('django.views.generic.simple',
+    (r'^posted/$', 'direct_to_template', dict(template='polls/posted.html')),
+)
+
 urlpatterns += patterns('polls.views',
     (r'^create/$', 'poll_form'),
     (r'^ajaxrefresh/$', 'ajax_refresh'),
     (r'^(?P<slug>[-\w]+)/$', 'vote_form'),
 )
+
