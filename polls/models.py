@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from tagging.fields import TagField
 from published_manager.managers import PublishedManager
+from django.utils.translation import ugettext as _
 
 class Poll(models.Model):
     """
