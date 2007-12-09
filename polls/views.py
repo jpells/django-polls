@@ -59,6 +59,6 @@ def vote_form(request, slug):
         vote_form = VoteFormClass(request.POST)
         if vote_form.is_valid():
             vote = vote_form.save(commit=False)
-            vote.poll = poll
+            vote.poll = Poll.objects.get(slug=slug)
             vote.save()
     return render_to_response('polls/vote_form.html', get_poll(request.user, request.META['REMOTE_ADDR'], slug), context_instance=RequestContext(request))

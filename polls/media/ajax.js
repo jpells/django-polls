@@ -3,8 +3,9 @@ function update_poll() {
 }
 
 function send_form() {
-    url = "/polls/"+$('id_slug').value+"/";
+    url = "/polls/"+document.getElementById('id_slug').value+"/";
     new Ajax.Request(url, {asynchronous:true, parameters:Form.serialize(form)});
     Form.reset(form);
+    update_poll();
     return false;
 }
