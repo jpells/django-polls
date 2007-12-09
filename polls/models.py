@@ -9,12 +9,12 @@ class Poll(models.Model):
     """
     A poll 
     """
-    title = models.CharField(maxlength=200, verbose_name=_("Title"))
+    title = models.CharField(max_length=200, verbose_name=_("Title"))
     description = models.TextField(verbose_name=_("Description"), blank=True, null=True, help_text=_("Not Required"))
     slug = models.SlugField(prepopulate_from=('title',), unique=True, verbose_name=_("Slug Field"))
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name=_("Date Published"))
     user = models.ForeignKey(User, verbose_name=_("User"))
-    state = models.CharField(maxlength=1, choices=settings.STATE_CHOICES, default=settings.STATE_DEFAULT, verbose_name=_("State of object"))
+    state = models.CharField(max_length=1, choices=settings.STATE_CHOICES, default=settings.STATE_DEFAULT, verbose_name=_("State of object"))
     ip_address = models.IPAddressField(verbose_name=_("Author's IP Address"))
     tags = TagField(help_text=_("Enter key terms seperated with a space that you want to associate with this Poll"), verbose_name=_("Tags"))
     objects = models.Manager()
@@ -78,7 +78,7 @@ class Choice(models.Model):
     A choice 
     """
     poll = models.ForeignKey(Poll, null=False, blank=False, verbose_name=_("Poll"), edit_inline=models.TABULAR, num_in_admin=5)
-    choice = models.CharField(maxlength=200, verbose_name=_("Choice"), core=True)
+    choice = models.CharField(max_length=200, verbose_name=_("Choice"), core=True)
     objects = ChoiceManager()
 
     def __str__(self):
