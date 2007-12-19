@@ -28,7 +28,7 @@ class Poll(models.Model):
     def get_absolute_url(self):
         return "/polls/%s/" % self.slug
 
-    def __str__(self):
+    def __unicode__(self):
         return _(self.title)
 
     class Meta:
@@ -81,7 +81,7 @@ class Choice(models.Model):
     choice = models.CharField(max_length=200, verbose_name=_("Choice"), core=True)
     objects = ChoiceManager()
 
-    def __str__(self):
+    def __unicode__(self):
         return _(self.choice)
 
     def get_vote_count(self):
@@ -101,7 +101,7 @@ class Vote(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"), related_name='polls_vote')
     ip_address = models.IPAddressField(verbose_name=_("Author's IP Address"))
 
-    def __str__(self):
+    def __unicode__(self):
         return _(self.choice.choice)
 
     class Meta:
