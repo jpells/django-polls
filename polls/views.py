@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 from polls.models import Poll, Vote, Choice
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from polls.templatetags.polls_tags import get_poll 
+from polls.utils import get_poll_dict 
 
 def poll_form(request):
     PollFormClass = forms.models.form_for_model(Poll) 
@@ -49,7 +49,7 @@ def poll_form(request):
 poll_form = login_required(poll_form)
 
 def ajax_refresh(request):
-    return render_to_response('polls/vote_form_ajax.html', get_poll(request.user, request.META['REMOTE_ADDR']), context_instance=RequestContext(request))
+    return render_to_response('polls/vote_form_ajax.html', get_poll_dict(RequestContext(request)), context_instance=RequestContext(request))
 
 def vote_form(request, slug):
     if request.POST:
@@ -61,4 +61,4 @@ def vote_form(request, slug):
             vote = vote_form.save(commit=False)
             vote.poll = Poll.objects.get(slug=slug)
             vote.save()
-    return render_to_response('polls/vote_form.html', get_poll(request.user, request.META['REMOTE_ADDR'], slug), context_instance=RequestContext(request))
+    return render_to_response('polls/vote_form.html', get_poll_dict(RequestContext(request), slug), context_instance=RequestContext(request))
