@@ -5,8 +5,8 @@
 <h2>Poll</h2>
 <h1>{{ poll.title }}</h1>
 {% if already_voted %}
-{% for choice in choice_tuple %}
-    <li>{{ choice.1 }} -- {{ choice.2 }} vote{{ choice.2|pluralize }}</li>
+{% for choice in poll.choice_set.all %}
+    <li>{{ choice.choice }} -- {{ choice.get_vote_count }} vote{{ choice.get_vote_count|pluralize }}</li>
 {% endfor %}
 {% else %}
 {% if form.has_errors %}

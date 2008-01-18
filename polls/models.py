@@ -20,11 +20,6 @@ class Poll(models.Model):
     objects = models.Manager()
     published_objects = PublishedManager()
 
-    def get_choices_tuple(self):
-        choices = Choice.objects.with_counts(poll_id=self.id, as_dict=False)
-        choice_tuple = ((choice.id, choice.choice, choice.vote_count) for choice in choices)
-        return choice_tuple
-
     def get_absolute_url(self):
         return "/polls/%s/" % self.slug
 
@@ -52,40 +47,19 @@ class Poll(models.Model):
             }),
         )
 
-class ChoiceManager(models.Manager):
-    def with_counts(self, poll_id, as_dict):
-        from django.db import connection
-        cursor = connection.cursor()
-        #TODO fix for postgres
-        cursor.execute("SELECT a.poll_id, a.id, a.choice, ifnull(i.num_votes, 0) vote_count from polls_choice a left outer join (select c.poll_id, c.choice, count(*) num_votes from polls_choice c, polls_vote v where c.poll_id = v.poll_id and c.id = v.choice_id group by c.choice) i on a.choice = i.choice where a.poll_id = %s;", [poll_id])
-        result_list = []
-        for row in cursor.fetchall():
-            c = self.model(id=row[1], choice=row[2], poll_id=row[0])
-            c.vote_count = row[3]
-            result_list.append(c)
-        result_dict = {}
-        if as_dict:
-            counter = 0
-            for choice in result_list:
-                choice_dict = {'choice': choice.choice, 'vote_count': choice.vote_count}
-                result_dict.update({counter: choice_dict})
-                counter += 1
-            return result_dict
-        return result_list
-
 class Choice(models.Model):
     """
     A choice 
     """
     poll = models.ForeignKey(Poll, null=False, blank=False, verbose_name=_("Poll"), edit_inline=models.TABULAR, num_in_admin=5)
     choice = models.CharField(max_length=200, verbose_name=_("Choice"), core=True)
-    objects = ChoiceManager()
+    objects = models.Manager()
 
     def __unicode__(self):
         return _(self.choice)
 
     def get_vote_count(self):
-        return Vote.objects.filter(choice=self).count()
+        return self.vote_set.all().count()
 
     class Meta:
         verbose_name = _("Choice")

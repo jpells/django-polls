@@ -20,9 +20,8 @@ def get_poll_dict(context, slug=None):
         if int(poll.state) != settings.STATE_PUBLISHED:
             raise Http404
         template_dict.update({'poll': poll})
-        template_dict.update({'choice_tuple': poll.get_choices_tuple()})
         VoteForm = forms.models.form_for_model(Vote)
-        VoteForm.base_fields['choice'].widget = forms.widgets.RadioSelect(choices=poll.get_choices_tuple())
+        VoteForm.base_fields['choice'].widget = forms.widgets.RadioSelect(choices=((choice.id, choice.choice) for choice in poll.choice_set.all()))
         VoteForm.base_fields['choice'].required = True
         VoteForm.base_fields['user'].widget = forms.widgets.HiddenInput()
         VoteForm.base_fields['user'].initial = user.id

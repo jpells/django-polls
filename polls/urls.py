@@ -27,7 +27,7 @@ urlpatterns += patterns('sorted_paginated_authored_archived_list_view.views',
     (r'^(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<day>\w{1,2})/$', 'sorted_paginated_authored_archived_list', poll_dict),
     (r'^(?P<year>\d{4})/(?P<month>[a-z]{3})/$', 'sorted_paginated_authored_archived_list', poll_dict),
     (r'^(?P<year>\d{4})/$', 'sorted_paginated_authored_archived_list', poll_dict),
-    (r'^$', 'sorted_paginated_authored_archived_list', poll_dict),
+    (r'^$', 'sorted_paginated_authored_archived_list', poll_dict, "polls_main"),
     (r'^votes/$', 'sorted_paginated_authored_archived_list', vote_dict),
     # if votes were really archived there would be more urls here
 )
@@ -37,7 +37,7 @@ urlpatterns += patterns('django.views.generic.simple',
 )
 
 urlpatterns += patterns('polls.views',
-    (r'^create/$', 'poll_form'),
+    (r'^create/$', 'poll_form', {}, "polls_create"),
     (r'^ajaxrefresh/$', 'ajax_refresh'),
     (r'^(?P<slug>[-\w]+)/$', 'vote_form'),
 )
