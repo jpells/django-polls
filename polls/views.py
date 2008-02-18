@@ -4,7 +4,7 @@ from django import newforms as forms
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
 from polls.models import Poll, Vote, Choice
-from django.conf import settings
+from polls import settings
 from django.contrib.auth.decorators import login_required
 from polls.utils import get_poll_dict 
 

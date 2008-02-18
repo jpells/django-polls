@@ -3,13 +3,13 @@ from django import newforms as forms
 from polls.models import Poll, Vote
 from django.shortcuts import get_object_or_404
 from django.http import Http404
-from django.conf import settings
+from polls import settings as settings
 
 def get_poll_dict(context, slug=None):
     user = resolve_variable('user', context)
     ip_address = resolve_variable('request.META.REMOTE_ADDR', context)
     template_dict = context 
-    template_dict.update({'poll_exists': True, 'already_voted': False, 'user': user, 'MEDIA_URL': settings.MEDIA_URL, 'not_auth': False})
+    template_dict.update({'poll_exists': True, 'already_voted': False, 'user': user, 'not_auth': False})
     try:
         if slug != None:
             poll = get_object_or_404(Poll, slug=slug)
@@ -21,6 +21,7 @@ def get_poll_dict(context, slug=None):
             raise Http404
         template_dict.update({'poll': poll})
         VoteForm = forms.models.form_for_model(Vote)
+        #TODO forms.ModelChoiceField(label=u'Choice', required=True, queryset=poll.choice_set.all())
         VoteForm.base_fields['choice'].widget = forms.widgets.RadioSelect(choices=((choice.id, choice.choice) for choice in poll.choice_set.all()))
         VoteForm.base_fields['choice'].required = True
         VoteForm.base_fields['user'].widget = forms.widgets.HiddenInput()

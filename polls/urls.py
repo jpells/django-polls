@@ -1,7 +1,6 @@
 from django.conf.urls.defaults import *
 from polls.feeds import RssFeed, AtomFeed
 from polls.models import Poll, Vote
-from django.conf import settings
 
 feeds = { 
     'rss': RssFeed,

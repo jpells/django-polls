@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.conf import settings
+from polls import settings
 from tagging.fields import TagField
 from published_manager.managers import PublishedManager
 from django.utils.translation import ugettext as _
